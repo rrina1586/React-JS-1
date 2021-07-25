@@ -1,6 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
+//import { useState } from 'react';
 import './App.css';
+import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types'
 
 const AUTHORS = {
   ME: "Me",
@@ -8,8 +10,19 @@ const AUTHORS = {
 }
 
 function Message(props) {
-  return <p>{props.author}: {props.text}</p>
+  const { nick = "1234id" } = props;
+
+  return <p id={nick}>
+    {props.author}: {props.text}
+  </p>
 }
+
+Message.propTypes = {
+  id: PropTypes.string,
+  author: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired
+}
+Message.defaultProps = {}
 
 function App() {
   const [messageList, setMessageList] = React.useState([]);//поле стейта
@@ -43,11 +56,16 @@ function App() {
         </div>
 
         <form className="app__form" onSubmit={handleMessageSubmit}>
-          <input
+          <TextField
+            label="Сообщение"
+            variant="outlined"
+            autoFocus
             className="input"
-            placeholder="Введите сообщение"
+            required
+            fullWidth
             value={inputValue}
             onChange={handleMessageChange}
+            placeholder="Введите сообщение"
           />
           <button>Отправить</button>
         </form>
